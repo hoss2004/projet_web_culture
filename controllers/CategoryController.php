@@ -120,6 +120,13 @@ class CategoryController
             die("Erreur lors de la suppression de la catégorie : " . $e->getMessage());
         }
     }
+    // ProductController.php
+
+public function showAllProductsFront() {
+    $products = $this->listProducts(); // Utilisation de la méthode listProducts pour obtenir tous les produits
+    include '../../views/front/event-listing.php'; // Inclure la vue pour afficher les produits
+}
+
 }
 
 // Dispatcher: Handle the request

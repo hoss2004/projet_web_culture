@@ -51,6 +51,7 @@ class ProductController {
         $new_status = $product['is_favorite'] == 1 ? 0 : 1;
         return $this->productModel->toggleFavorite($product_id, $new_status);
     }
+
     
 }
 ?>
