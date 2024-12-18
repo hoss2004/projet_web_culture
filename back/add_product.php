@@ -41,11 +41,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Ajouter un Produit</title>
     <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <script>
+        // JavaScript function to validate the category name (only letters)
+        function validateProductName() {
+            var productName = document.getElementById('nom').value;
+            var regex = /^[A-Za-zÀ-ÿ\s]+$/;  // Regex to allow only letters and spaces (including accented characters)
+
+            if (!regex.test(productName)) {
+                alert("Le nom de la catégorie ne doit contenir que des lettres et des espaces.");
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Ajouter un Nouveau Produit</h1>
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="" method="POST" enctype="multipart/form-data" onsubmit="return validateProductName();">
             <div class="form-group">
                 <label for="category_id">Catégorie :</label>
                 <select id="category_id" name="category_id" class="form-control" required>

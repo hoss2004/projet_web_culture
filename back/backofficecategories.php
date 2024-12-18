@@ -10,6 +10,19 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC
 <html lang="fr">
 
 <head>
+<script>
+        // JavaScript function to validate the category name (only letters)
+        function validateCategoryName() {
+            var categoryName = document.getElementById('nom').value;
+            var regex = /^[A-Za-zÀ-ÿ]+$/;  // Regex to allow only letters (including accented characters)
+
+            if (!regex.test(categoryName)) {
+                alert("Le nom de la catégorie ne doit contenir que des lettres.");
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+    </script>
     <!-- Début du container de la template -->
     <div id="pcoded" class="pcoded">
         <div class="pcoded-container navbar-wrapper">
@@ -97,6 +110,7 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC
             <!-- Sidebar (Menu) -->
             <div class="pcoded-wrapper">
                 <nav class="pcoded-navbar">
+
                     <div class="pcoded-inner-navbar main-menu">
                         <ul class="pcoded-item pcoded-left-item">
                             <li>
@@ -112,7 +126,7 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC
                                 </a>
                             </li>
                             <li>
-                                <a href="logout.php" class="waves-effect waves-dark">
+                                <a href="index.html" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-layout-sidebar-left"></i></span>
                                     <span class="pcoded-mtext">Déconnexion</span>
                                 </a>
@@ -137,6 +151,7 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC
 
                     <!-- Table des Catégories -->
                     <div class="pcoded-inner-content">
+                    <a href="export_categories_pdf.php" class="btn btn-info">Générer le PDF</a>
                         <div class="main-body">
                             <div class="page-wrapper">
                                 <div class="page-body">
@@ -174,18 +189,17 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC
                                     </table>
                                     <!-- Formulaire d'ajout -->
                                     <h2>Ajouter une Nouvelle Catégorie</h2>
-                                    <form action="add_category.php" method="POST">
-                                        <div class="form-group">
-                                            <label for="nom">Nom :</label>
-                                            <input type="text" id="nom" name="nom" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="description">Description :</label>
-                                            <input type="text" id="description" name="description" class="form-control" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-success">Ajouter</button>
-                                    </form>
-
+                                    <form action="add_category.php" method="POST" onsubmit="return validateCategoryName()">
+        <div class="form-group">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description :</label>
+            <input type="text" id="description" name="description" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Ajouter</button>
+    </form>
                                 </div>
                             </div>
                         </div>

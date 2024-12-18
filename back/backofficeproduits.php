@@ -115,7 +115,7 @@ $products = $productController->listProducts();
                                 </a>
                             </li>
                             <li>
-                                <a href="logout.php" class="waves-effect waves-dark">
+                                <a href="index.html" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-layout-sidebar-left"></i></span>
                                     <span class="pcoded-mtext">Déconnexion</span>
                                 </a>
@@ -140,6 +140,8 @@ $products = $productController->listProducts();
 
                     <!-- Table des Produits -->
                     <div class="pcoded-inner-content">
+                    <a href="generate_pdf.php" class="btn btn-info mb-3">Générer le PDF</a>
+
                         <div class="main-body">
                             <div class="page-wrapper">
                                 <div class="page-body">
