@@ -3,28 +3,48 @@
 
 if (isset($_GET['query'])) {
     $query = $_GET['query'];
-    // Connectez-vous à la base de données (exemple avec PDO)
-    
-    $pdo = new PDO('mysql:host=localhost;dbname=craftupia', 'root', ''); // Remplacez par vos informations
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Requête pour rechercher des articles (ajustez selon vos tables et colonnes)
-    $stmt = $pdo->prepare("SELECT * FROM produits WHERE nom LIKE :query OR description LIKE :query");
-    $stmt->execute(['query' => '%' . $query . '%']);
-    $result = $stmt->fetchAll();
+    try {
+        // Connexion à la base de données
+        $pdo = new PDO('mysql:host=localhost;dbname=artisanat', 'root', '');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($result) {
-        // Afficher les résultats de la recherche
-        echo "<h2>Résultats pour '$query':</h2>";
-        foreach ($result as $row) {
-            echo "<div>";
-            echo "<h3>" . htmlspecialchars($row['nom']) . "</h3>";
-            echo "<p>" . htmlspecialchars($row['description']) . "</p>";
-            // Afficher d'autres informations comme les coordonnées de l'artisan
-            echo "</div>";
+        // Requête pour rechercher dans les produits et les catégories
+        $stmt = $pdo->prepare("
+            SELECT 
+                p.nom AS product_name,
+                p.description AS product_description,
+                c.nom AS category_name
+            FROM 
+                products p
+            LEFT JOIN 
+                categories c
+            ON 
+                p.category_id = c.id
+            WHERE 
+                p.nom LIKE :query OR 
+                p.description LIKE :query OR
+                c.nom LIKE :query
+        ");
+        
+        $stmt->execute(['query' => '%' . $query . '%']);
+        $result = $stmt->fetchAll();
+
+        if ($result) {
+            // Afficher les résultats de la recherche
+            echo "<h2>Résultats pour '$query':</h2>";
+            foreach ($result as $row) {
+                echo "<div>";
+                echo "<h3>Produit : " . htmlspecialchars($row['product_name']) . "</h3>";
+                echo "<p>Description : " . htmlspecialchars($row['product_description']) . "</p>";
+                echo "<p>Catégorie : " . htmlspecialchars($row['category_name']) . "</p>";
+                echo "</div>";
+            }
+        } else {
+            echo "Aucun résultat trouvé pour '$query'.";
         }
-    } else {
-        echo "Aucun résultat trouvé pour '$query'.";
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
     }
 } else {
     echo "Veuillez entrer un terme de recherche.";

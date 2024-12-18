@@ -1,8 +1,7 @@
 <?php
-// Inclure le contrôleur
-require_once '../controllers/ProductController.php';
+require_once '../../controllers/ProductController.php';
 
-// Initialiser le contrôleur
+// Fetch products
 $productController = new ProductController();
 $products = $productController->listProducts();
 ?>
@@ -15,8 +14,7 @@ $products = $productController->listProducts();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>Tiya Golf Club - Event Listing</title>
+    <title>Tiya Golf Club - Product Listing</title>
 
     <!-- CSS FILES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,30 +37,41 @@ $products = $productController->listProducts();
             </div>
         </nav>
 
-        <!-- Section Produits -->
+        <!-- Upcoming Events Section -->
         <section class="events-section section-padding" id="section_2">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-12">
-                        <h2 class="mb-lg-5 mb-4">Nos Produits Récents</h2>
+                        <h2 class="mb-lg-5 mb-4">Upcoming Products</h2>
                     </div>
 
                     <?php if (!empty($products)): ?>
                         <?php foreach ($products as $product): ?>
                             <div class="col-lg-4 col-md-6 col-12 mb-5">
                                 <div class="custom-block-image-wrap">
-                                    <img src="<?= htmlspecialchars($product['image']) ?>" class="custom-block-image img-fluid" alt="<?= htmlspecialchars($product['nom']) ?>">
+                                    <!-- Product Image -->
+                                    <img src="../uploads/<?= htmlspecialchars($product['image']) ?>" class="custom-block-image img-fluid" alt="<?= htmlspecialchars($product['nom']) ?>">
                                 </div>
 
                                 <div class="custom-block-info">
+                                    <!-- Product Name -->
                                     <h5 class="events-title mb-2"><?= htmlspecialchars($product['nom']) ?></h5>
+
+                                    <!-- Product Description -->
                                     <p class="mb-0"><?= htmlspecialchars($product['description']) ?></p>
+
+                                    <!-- Product Category -->
+                                    <p><strong>Category:</strong> <?= htmlspecialchars($product['category_name']) ?></p>
+
+                                    <!-- Product Dates -->
+                                    <p><strong>Added on:</strong> <?= htmlspecialchars($product['date_creation']) ?></p>
+                                    <p><strong>Last Updated:</strong> <?= htmlspecialchars($product['date_modification']) ?></p>
                                 </div>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <div class="col-12">
-                            <p class="text-center">Aucun produit disponible pour le moment.</p>
+                            <p class="text-center">No products are available at the moment.</p>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -75,7 +84,7 @@ $products = $productController->listProducts();
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-12 me-auto mb-5 mb-lg-0">
-                    <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <a class="navbar-brand d-flex align-items-center" href="index.php">
                         <img src="images/logo.png" class="navbar-brand-image img-fluid" alt="">
                         <span class="navbar-brand-text">Tiya <small>Golf Club</small></span>
                     </a>
