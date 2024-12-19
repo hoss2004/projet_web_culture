@@ -24,11 +24,22 @@
 
     <link href="css/templatemo-tiya-golf-club.css" rel="stylesheet">
     <link rel="stylesheet" href="./sponsor.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Ajouter le CSS de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Ajouter le JavaScript de Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+
     <style>
     /* Style de la section sponsor */
     /* Section des événements */
+    /* Section des événements */
     .events-section {
-        background: linear-gradient(135deg, #f0f4f8, #ffffff);
+        background: #f4f1de;
+        /* Fond beige */
         padding: 50px 0;
         position: relative;
         overflow: hidden;
@@ -37,7 +48,8 @@
     .events-section h2 {
         text-align: center;
         font-size: 2.8rem;
-        color: #1e88e5;
+        color: #3c405b;
+        /* Mauve foncé pour le titre */
         font-weight: bold;
         margin-bottom: 40px;
         position: relative;
@@ -47,7 +59,8 @@
         content: '';
         width: 80px;
         height: 4px;
-        background: #1e88e5;
+        background: #3c405b;
+        /* Mauve foncé pour la ligne décorative */
         display: block;
         margin: 10px auto;
         border-radius: 2px;
@@ -76,7 +89,8 @@
     }
 
     .custom-block-date-wrap {
-        background: #1e88e5;
+        background: #3c405b;
+        /* Mauve foncé pour la section date */
         color: #ffffff;
         text-align: center;
         padding: 10px;
@@ -107,7 +121,8 @@
     .custom-block-info a.events-title {
         font-size: 1.4rem;
         font-weight: bold;
-        color: #1e88e5;
+        color: #3c405b;
+        /* Mauve foncé pour le titre de l'événement */
         text-decoration: none;
         display: block;
         margin-bottom: 10px;
@@ -116,6 +131,7 @@
 
     .custom-block-info a.events-title:hover {
         color: #1565c0;
+        /* Hover effect pour le titre de l'événement */
     }
 
     .custom-block-info p {
@@ -141,7 +157,7 @@
         position: absolute;
         width: 200px;
         height: 200px;
-        background: radial-gradient(circle, rgba(30, 136, 229, 0.2) 10%, transparent 80%);
+        background: radial-gradient(circle, rgba(60, 64, 91, 0.2) 10%, transparent 80%);
         z-index: -1;
         animation: float 6s ease-in-out infinite;
     }
@@ -168,8 +184,10 @@
         }
     }
 
+    /* Section des sponsors */
     .sponsor-section {
-        background: linear-gradient(135deg, #1e1e2f, #4a00e0);
+        background: #3c405b;
+        /* Mauve foncé */
         color: #fff;
         padding: 50px 0;
         overflow: hidden;
@@ -181,7 +199,8 @@
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 2px;
-        color: #ffeb3b;
+        color: #f4f1de;
+        /* Beige pour le titre */
         margin-bottom: 40px;
         position: relative;
         animation: glow 1.5s infinite alternate;
@@ -190,11 +209,11 @@
     /* Glow effect for the title */
     @keyframes glow {
         from {
-            text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ffeb3b, 0 0 30px #ffeb3b, 0 0 40px #ffeb3b;
+            text-shadow: 0 0 10px #f4f1de, 0 0 20px #f4f1de, 0 0 30px #f4f1de, 0 0 40px #f4f1de;
         }
 
         to {
-            text-shadow: 0 0 20px #ffe873, 0 0 30px #ffe873, 0 0 40px #ffe873, 0 0 50px #ffe873;
+            text-shadow: 0 0 20px #f4e1b1, 0 0 30px #f4e1b1, 0 0 40px #f4e1b1, 0 0 50px #f4e1b1;
         }
     }
 
@@ -207,7 +226,8 @@
 
     .sponsor-item {
         background: rgba(255, 255, 255, 0.1);
-        border: 2px solid #ffeb3b;
+        border: 2px solid #f4f1de;
+        /* Beige pour la bordure */
         padding: 20px;
         border-radius: 20px;
         text-align: center;
@@ -226,8 +246,9 @@
         max-width: 120px;
         max-height: 120px;
         border-radius: 50%;
-        border: 3px solid #ffeb3b;
-        box-shadow: 0 0 15px #ffeb3b;
+        border: 3px solid #f4f1de;
+        /* Beige pour la bordure des logos */
+        box-shadow: 0 0 15px #f4f1de;
         transition: transform 0.3s ease;
     }
 
@@ -239,7 +260,8 @@
         font-size: 1.5rem;
         font-weight: bold;
         margin-top: 15px;
-        color: #ffeb3b;
+        color: #f4f1de;
+        /* Beige pour le nom du sponsor */
         text-transform: uppercase;
     }
 
@@ -329,41 +351,117 @@ https://templatemo.com/tm-587-tiya-golf-club
                 </div>
             </div>
         </section>
-
-        <section class="events-section events-detail-section section-padding" id="section_2">
+        <section class="events-section events-detail-section py-5" id="section_2"
+            style="background: #f4f1de; color: #fff;">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-8 col-12 mx-auto">
-                        <h2 class="mb-lg-5 mb-4"><?= htmlspecialchars($event['title']); ?></h2>
+                <div class="row align-items-center">
+                    <!-- Colonne Image -->
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <div class="image-wrapper position-relative">
+                            <img src="<?= htmlspecialchars($event['image']); ?>" class="img-fluid rounded shadow-lg"
+                                alt="<?= htmlspecialchars($event['title']); ?>" style="border: 5px solid #fff;">
+                            <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                style="background: rgba(0, 0, 0, 0.6); opacity: 0; transition: opacity 0.3s;">
+                                <h4 class="text-light fw-bold">Explore <?= htmlspecialchars($event['title']); ?></h4>
+                            </div>
+                        </div>
+                    </div>
 
-                        <div class="custom-block-image-wrap">
-                            <!-- Image dynamique -->
-                            <img src="<?= htmlspecialchars($event['image']); ?>" class="custom-block-image img-fluid"
-                                alt="<?= htmlspecialchars($event['title']); ?>">
+                    <!-- Colonne Détails -->
+                    <div class="col-lg-6">
+                        <h2 class="mb-4" style="color: #3c405b; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);">
+                            <?= htmlspecialchars($event['title']); ?>
+                        </h2>
+                        <p class="lead text-white-50"><?= nl2br(htmlspecialchars($event['description']));  ?></p>
+
+                        <!-- Détails spécifiques -->
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="detail-box d-flex align-items-center">
+                                    <i class="bi bi-calendar-event-fill me-3"
+                                        style="font-size: 1.5rem; color: #3c405b;"></i>
+                                    <div>
+                                        <span class="fw-bold" style="color: #3c405b;">Date :</span>
+                                        <p class="mb-0"><?= date('d M Y', strtotime($event['date'])); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="detail-box d-flex align-items-center">
+                                    <i class="bi bi-geo-alt-fill me-3" style="font-size: 1.5rem; color: #3c405b;"></i>
+                                    <div>
+                                        <span class="fw-bold" style="color: #3c405b;">Lieu :</span>
+                                        <p class="mb-0"><?= htmlspecialchars($event['location']); ?></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="custom-block-info">
-                            <h3 class="mb-3">Event Details</h3>
-                            <p><?= nl2br(htmlspecialchars($event['description'])); ?></p>
+                        <div id="map" style="height: 400px; margin-top: 20px;"></div>
 
-                            <div class="events-detail-info row my-5">
-                                <div class="col-lg-4 col-12">
-                                    <span class="custom-block-span">Date:</span>
-                                    <p class="mb-0"><?= date('d M Y', strtotime($event['date'])); ?></p>
-                                </div>
+                        <?php
+                // Adresse récupérée de la base de données (exemple : "Sousse")
+                $location = htmlspecialchars($event['location']); // Utilisez la localisation de votre base de données
 
-                                <div class="col-lg-4 col-12 my-3 my-lg-0">
-                                    <span class="custom-block-span">Location:</span>
-                                    <p class="mb-0"><?= htmlspecialchars($event['location']); ?></p>
-                                </div>
-                                <a href="inscription.php?id=<?= $event['id'] ?>"
-                                    class="btn btn-primary mt-3">S'inscrire</a>
-                            </div>
+                // Votre API key pour OpenCage
+                $apiKey = 'fc60f0271d5d49549b08827c1e63ee7f'; 
+
+                // Préparer l'URL de l'API OpenCage pour le géocodage
+                $geocode_url = "https://api.opencagedata.com/geocode/v1/json?q=" . urlencode($location) . "&key=" . $apiKey;
+
+                // Effectuer la requête HTTP pour récupérer les données géographiques
+                $response = file_get_contents($geocode_url);
+
+                // Décoder la réponse JSON
+                $data = json_decode($response, true);
+
+                // Vérifier si la réponse contient des résultats
+                if (!empty($data['results'])) {
+                    // Extraire la latitude et la longitude du premier résultat
+                    $latitude = $data['results'][0]['geometry']['lat'];
+                    $longitude = $data['results'][0]['geometry']['lng'];
+                } else {
+                    // Si aucun résultat n'est trouvé, définir des valeurs par défaut
+                    $latitude = 0;
+                    $longitude = 0;
+                }
+
+                ?>
+
+                        <script>
+                        // Récupérer les coordonnées depuis PHP
+                        var latitude = <?= $latitude ?>;
+                        var longitude = <?= $longitude ?>;
+
+                        // Créer la carte
+                        var map = L.map('map').setView([latitude, longitude],
+                            13); // Utiliser les coordonnées récupérées
+
+                        // Ajouter la couche OpenStreetMap
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(map);
+
+                        // Ajouter un marqueur à l'emplacement de l'événement
+                        L.marker([latitude, longitude]).addTo(map)
+                            .bindPopup('<?= htmlspecialchars($event['title']); ?>')
+                            .openPopup();
+                        </script>
+
+                        <!-- Bouton S'inscrire -->
+                        <div class="mt-4">
+                            <a href="inscription.php?id=<?= $event['id'] ?>"
+                                class="btn btn-lg px-4 py-3 text-uppercase text-light fw-bold shadow-sm"
+                                style="background: #3c405b; border-radius: 30px; transition: transform 0.3s;">
+                                <i class="bi bi-pencil me-2"></i>S'inscrire maintenant
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+
     </main>
     <section class="sponsor-section section-padding">
         <div class="container">
@@ -379,7 +477,11 @@ https://templatemo.com/tm-587-tiya-golf-club
                         echo '<div class="sponsor-item">';
 
                         // Affichage du logo
-                        
+                        if (isset($sponsor['logo']) && !empty($sponsor['logo'])) {
+                            echo '<img src="' . htmlspecialchars($sponsor['logo']) . '" class="sponsor-logo img-fluid mb-3" alt="' . htmlspecialchars($sponsor['nom_sp']) . '">';
+                        } else {
+                            echo '<div class="placeholder-logo mb-3">Logo non disponible</div>';
+                        }
 
                         // Affichage du nom du sponsor
                         if (isset($sponsor['nom_sp']) && !empty($sponsor['nom_sp'])) {
@@ -454,17 +556,8 @@ https://templatemo.com/tm-587-tiya-golf-club
             </div>
 
             <div class="col-lg-3 col-12">
-                <h5 class="site-footer-title mb-4">Join Us</h5>
+                <br>
 
-                <p class="d-flex border-bottom pb-3 mb-3 me-lg-3">
-                    <span>Mon-Fri</span>
-                    6:00 AM - 6:00 PM
-                </p>
-
-                <p class="d-flex me-lg-3">
-                    <span>Sat-Sun</span>
-                    6:30 AM - 8:30 PM
-                </p>
                 <br>
                 <p class="copyright-text">Copyright © 2048 Tiya Golf Club</p>
             </div>
@@ -484,8 +577,7 @@ https://templatemo.com/tm-587-tiya-golf-club
                     </li>
                 </ul>
 
-                <p class="copyright-text">Design: <a rel="nofollow" href="https://templatemo.com"
-                        target="_blank">TemplateMo</a></p>
+
             </div>
 
         </div>

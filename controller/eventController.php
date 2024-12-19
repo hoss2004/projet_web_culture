@@ -9,15 +9,80 @@ require_once __DIR__ . '/../view/fpdf185/fpdf.php';
 $pdo = Database::getConnection();
 $eventManager = new EventManager($pdo);
 
+// Nouvelle fonction pour la pagination des événements
+// Nouvelle fonction pour la pagination des événements
+function listEventsPaginated($page = 1, $limit = 5) {
+    global $pdo;  // Utiliser la variable globale $pdo pour la connexion à la base de données
+
+    // Calculer l'offset en fonction de la page actuelle
+    $offset = ($page - 1) * $limit;
+
+    // Requête SQL pour récupérer les événements avec limite et offset
+    $query = "SELECT * FROM events LIMIT :limit OFFSET :offset";
+    $stmt = $pdo->prepare($query);  // Utiliser $pdo ici
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Récupérer le nombre total d'événements
+// Récupérer le nombre total d'événements
+function countEvents() {
+    global $pdo;  // Utilisez $pdo au lieu de $db
+    $query = "SELECT COUNT(*) AS total FROM events";
+    $stmt = $pdo->prepare($query);  // Utilisez $pdo ici aussi
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'];
+}
+
+
 function listEvents()
 {
     global $eventManager;
     return $eventManager->getAllEvents();
 }
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['calendar'])) {
+    $events = listEvents();
+    $calendarEvents = [];
+
+    foreach ($events as $event) {
+        $calendarEvents[] = [
+    'id' => $event['id'],
+    'title' => $event['title'],
+    'start' => date('Y-m-d\TH:i:s', strtotime($event['date'])) // Assurez-vous que 'date' contient l'heure
+];
+
+        
+    }
+
+    echo json_encode($calendarEvents);
+    exit();
+}
+
+
+
 
 function getEventById($id) {
     global $eventManager;
     return $eventManager->getEventById($id); 
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['calendar'])) {
+    $events = listEvents();
+    $calendarEvents = [];
+
+    foreach ($events as $event) {
+        $calendarEvents[] = [
+            'title' => $event['title'],
+            'date' => $event['date'],
+            'location' => $event['location'],
+        ];
+    }
+
+    echo json_encode($calendarEvents);
+    exit();
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register_event'])) {
     $name = $_POST['name'];
@@ -103,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $eventManager->createEvent($event);
         
         // Rediriger vers la page des événements après l'ajout
-        header('Location: ../view/backoffice/accordion.php?action=list');
+        header('Location: ../view/backoffice/add_event.php?action=list');
         exit; // Stopper l'exécution après la redirection
     }
     

@@ -377,7 +377,7 @@
 
                                                             <!-- Sélection du sponsor -->
                                                             <div class="form-group form-default form-static-label">
-                                                                <select name="id_sponsor" class="form-control" required>
+                                                                <select name="id_sponsor" class="form-control">
                                                                     <option value="">-- Sélectionnez un sponsor --
                                                                     </option>
                                                                     <?php
@@ -417,6 +417,100 @@
                             </div>
                             <!-- Main-body end -->
                         </div>
+                        <script>
+                        // Fonction de validation pour chaque champ
+                        function validateTitle() {
+                            const title = document.getElementById('title');
+                            const titleError = document.getElementById('titleError');
+                            if (!/^[A-Za-z\s]{4,}$/.test(title.value)) {
+                                titleError.textContent =
+                                    "Le titre doit contenir uniquement des lettres et être supérieur à 3 caractères.";
+                                return false;
+                            } else {
+                                titleError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        function validateLocation() {
+                            const location = document.getElementById('location');
+                            const locationError = document.getElementById('locationError');
+                            if (!/^[A-Za-z\s]+$/.test(location.value) || location.value.trim() === "") {
+                                locationError.textContent =
+                                    "Le lieu ne doit pas contenir de chiffres et ne doit pas être vide.";
+                                return false;
+                            } else {
+                                locationError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        function validateDate() {
+                            const date = document.getElementById('date');
+                            const dateError = document.getElementById('dateError');
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            const eventDate = new Date(date.value);
+
+                            if (isNaN(eventDate.getTime()) || eventDate < today) {
+                                dateError.textContent =
+                                    "La date doit être égale ou supérieure à la date actuelle.";
+                                return false;
+                            } else {
+                                dateError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        function validateDescription() {
+                            const description = document.getElementById('description');
+                            const descriptionError = document.getElementById('descriptionError');
+                            if (description.value.trim() === "") {
+                                descriptionError.textContent = "La description ne doit pas être vide.";
+                                return false;
+                            } else {
+                                descriptionError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        function validateImage() {
+                            const image = document.getElementById('image');
+                            const imageError = document.getElementById('imageError');
+                            if (!image.value) {
+                                imageError.textContent = "Veuillez ajouter une image.";
+                                return false;
+                            } else {
+                                imageError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        // Ajout des écouteurs d'événements
+                        document.getElementById('title').addEventListener('keyup', validateTitle);
+                        document.getElementById('location').addEventListener('keyup', validateLocation);
+                        document.getElementById('date').addEventListener('change',
+                        validateDate); // Keyup n'est pas pertinent pour les dates
+                        document.getElementById('description').addEventListener('keyup', validateDescription);
+                        document.getElementById('image').addEventListener('change', validateImage);
+
+                        // Validation finale lors de la soumission
+                        document.getElementById('eventForm').addEventListener('submit', function(event) {
+                            const isValid =
+                                validateTitle() &&
+                                validateLocation() &&
+                                validateDate() &&
+                                validateDescription() &&
+                                validateImage();
+
+                            if (!isValid) {
+                                event
+                            .preventDefault(); // Empêcher la soumission si le formulaire n'est pas valide
+                            }
+                        });
+                        </script>
+
+
 
 
                         <!-- Script de validation en temps réel -->

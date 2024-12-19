@@ -365,6 +365,79 @@
                                 </div>
                             </div>
                         </div>
+                        <script>
+                        // Fonction de validation pour chaque champ
+                        function validateNomSp() {
+                            const nomSp = document.getElementById('nom_sp');
+                            const nomSpError = document.getElementById('nom_sp_error');
+                            if (!/^[A-Za-z\s]{3,}$/.test(nomSp.value)) {
+                                nomSpError.textContent =
+                                    "Le nom du sponsor doit contenir uniquement des lettres et être supérieur à 2 caractères.";
+                                return false;
+                            } else {
+                                nomSpError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        function validateLogo() {
+                            const logo = document.getElementById('logo');
+                            const logoError = document.getElementById('logo_error');
+                            if (!logo.value) {
+                                logoError.textContent = "Veuillez ajouter un logo.";
+                                return false;
+                            } else {
+                                logoError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        function validateWebsite() {
+                            const website = document.getElementById('website');
+                            const websiteError = document.getElementById('website_error');
+                            const urlRegex = /^(https?:\/\/)?([\w\d-]+\.)+[\w-]+(\/[\w\d-.?=&]*)?$/;
+                            if (website.value.trim() !== "" && !urlRegex.test(website.value)) {
+                                websiteError.textContent = "Veuillez entrer une URL valide.";
+                                return false;
+                            } else {
+                                websiteError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        function validateDescription() {
+                            const description = document.getElementById('description');
+                            const descriptionError = document.getElementById('description_error');
+                            if (description.value.trim() === "") {
+                                descriptionError.textContent = "La description ne doit pas être vide.";
+                                return false;
+                            } else {
+                                descriptionError.textContent = "";
+                                return true;
+                            }
+                        }
+
+                        // Ajout des écouteurs d'événements
+                        document.getElementById('nom_sp').addEventListener('keyup', validateNomSp);
+                        document.getElementById('logo').addEventListener('change',
+                        validateLogo); // Utiliser "change" pour les fichiers
+                        document.getElementById('website').addEventListener('keyup', validateWebsite);
+                        document.getElementById('description').addEventListener('keyup', validateDescription);
+
+                        // Validation finale lors de la soumission
+                        document.getElementById('sponsorForm').addEventListener('submit', function(event) {
+                            const isValid =
+                                validateNomSp() &&
+                                validateLogo() &&
+                                validateWebsite() &&
+                                validateDescription();
+
+                            if (!isValid) {
+                                event
+                            .preventDefault(); // Empêcher la soumission si le formulaire n'est pas valide
+                            }
+                        });
+                        </script>
 
                         <!-- Script de validation -->
 

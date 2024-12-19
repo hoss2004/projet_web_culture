@@ -23,6 +23,15 @@
     <link href="css/bootstrap-icons.css" rel="stylesheet">
 
     <link href="css/templatemo-tiya-golf-club.css" rel="stylesheet">
+    <!-- Inclure FullCalendar CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet" />
+
+    <!-- Inclure jQuery (si ce n'est pas déjà inclus dans ton projet) -->
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+
 
     <!--
 
@@ -485,9 +494,37 @@ https://templatemo.com/tm-587-tiya-golf-club
                 <?php
     require_once '../controller/eventController.php';  // Inclure le contrôleur pour obtenir les événements
 
-    // Récupérer tous les événements
-    $events = listEvents();
+    // Nombre d'événements à afficher par page
+    $limit = 3;
+
+    // Page actuelle, par défaut 1
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+    // Récupérer les événements pour la page actuelle
+    $events = listEventsPaginated($page, $limit);
+
+    // Calculer le nombre total d'événements
+    $totalEvents = countEvents();
+
+    // Calculer le nombre total de pages
+    $totalPages = ceil($totalEvents / $limit);
+    $calendarEvents = [];
+    foreach ($events as $event) {
+        $calendarEvents[] = [
+            'id' => $event['id'],  // Assurez-vous que 'id' existe et est unique
+            'title' => $event['title'],
+            'start' => date('Y-m-d', strtotime($event['date'])),  // Format YYYY-MM-DD pour FullCalendar
+            'location' => $event['location'],
+            'description' => $event['description'], // Ajout de la description pour l'affichage dans la pop-up
+        ];
+    }
+
+    // Convertir en JSON et l'envoyer à JavaScript
+    echo '<script type="text/javascript">';
+    echo 'var events = ' . json_encode($calendarEvents) . ';';
+    echo '</script>';
     ?>
+
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12 col-12">
@@ -549,9 +586,100 @@ https://templatemo.com/tm-587-tiya-golf-club
                         <?php else : ?>
                         <p class="text-center">Aucun événement à venir trouvé.</p>
                         <?php endif; ?>
+
+
+                        <!-- Conteneur pour afficher le calendrier -->
+
+                        <div class="text-center mb-4">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#calendarModal">Voir
+                                le calendrier des événements</button>
+                        </div>
+
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-wrapper text-center mt-5">
+                        <ul class="pagination">
+                            <!-- Page précédente -->
+                            <?php if ($page > 1) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <?php endif; ?>
+
+                            <!-- Pages -->
+                            <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                            <li class="page-item <?= $i == $page ? 'active' : ''; ?>">
+                                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                            <?php endfor; ?>
+
+                            <!-- Page suivante -->
+                            <?php if ($page < $totalPages) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
                     </div>
                 </div>
             </section>
+            <!-- Modale pour afficher le calendrier -->
+            <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="calendarModalLabel">Calendrier des événements</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inclure jQuery et FullCalendar -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+
+            <script>
+            $(document).ready(function() {
+                // Initialisation du calendrier avec FullCalendar
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    events: events, // Utiliser la variable 'events' générée en PHP
+                    eventClick: function(info) {
+                        // Afficher les détails dans une modale ou autre action
+                        alert('Événement: ' + info.event.title);
+                    }
+                });
+
+                // Lancer FullCalendar lorsque la modale s'ouvre
+                $('#calendarModal').on('shown.bs.modal', function() {
+                    calendar.render(); // Afficher le calendrier lorsque la modale est ouverte
+                });
+
+                // Réinitialiser FullCalendar à la fermeture de la modale pour éviter les problèmes de rechargement
+                $('#calendarModal').on('hidden.bs.modal', function() {
+                    calendar.destroy();
+                    calendar = new FullCalendar.Calendar(calendarEl, {
+                        events: events
+                    });
+                });
+            });
+            </script>
+
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
 
             <script>
             // Fonction de recherche dynamique

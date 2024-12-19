@@ -1,7 +1,7 @@
 <?php
 require_once 'DB.php';
 require_once 'Event.php';
-//require_once '../controller/NotificationController.php';
+require_once '../controller/NotificationController.php';
 
 
 
@@ -97,6 +97,36 @@ class EventManager
         $stmt->execute();
     } catch (PDOException $e) {
         die('Erreur lors de la suppression de l\'événement : ' . $e->getMessage());
+    }
+}
+public function getEventsPaginated($page = 1, $eventsPerPage = 5)
+{
+    try {
+        $start = ($page - 1) * $eventsPerPage;
+        $sql = "SELECT e.*, s.nom_sp 
+                FROM events e 
+                LEFT JOIN sponsors s ON e.id_sponsor = s.id_sponsor
+                ORDER BY e.date ASC 
+                LIMIT :start, :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $eventsPerPage, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die('Erreur lors de la récupération des événements paginés : ' . $e->getMessage());
+    }
+}
+
+// Récupérer le nombre total d'événements
+public function countEvents()
+{
+    try {
+        $sql = "SELECT COUNT(*) FROM events";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        die('Erreur lors du comptage des événements : ' . $e->getMessage());
     }
 }
 }
